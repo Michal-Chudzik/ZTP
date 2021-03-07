@@ -2,7 +2,7 @@
 
 /** INFO:
 * Program sumuje podane temperatury i pojemnoœci z podanych
-* pojemników, pomiary i wyniki zapisuje do pliku za pomoc¹ przeci¹¿onego
+* pojemnikow, pomiary i wyniki zapisuje do pliku za pomoca przeciazonego
 * operatora wypisu.
 */
 
