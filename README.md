@@ -1,2 +1,2 @@
 # ZTP
-Rozwiazania zadan z Zaawansowanych Technik Programowania
+Repozytorium zawiera rozwiazania zadan z Zaawansowanych Technik Programowania
