@@ -25,8 +25,8 @@ double randDouble() {
 /// </summary>
 /// <typeparam name="T">Typ przekazany do szablonu.</typeparam>
 /// <param name="i1">Iterator 1 kontenera.</param>
-/// <param name="i2">Iterator 2 kontenera.</param>
-/// <param name="i3">Iterator wskazujacy na koniec kontenera</param>
+/// <param name="i2">Iterator wskazujacy na koniec kontenera.</param>
+/// <param name="i3">Iterator 2 kontenera.</param>
 template<typename T>
 void transformuj(T& i1, T& i2, T& i3) {
 	while (i1 != i2) {
@@ -48,8 +48,8 @@ void transformuj(T& i1, T& i2, T& i3) {
 /// </summary>
 /// <typeparam name="T">Typ przekazany do szablonu.</typeparam>
 /// <param name="i1">Iterator 1 kontenera.</param>
-/// <param name="i2">Iterator 2 kontenera.</param>
-/// <param name="i3">Iterator wskazujacy na koniec kontenera</param>
+/// <param name="i2">Iterator wskazujacy na koniec kontenera.</param>
+/// <param name="i3">Iterator 2 kontenera.</param>
 template<typename T>
 void roznicuj(T& i1, T& i2, T& i3) {
 	while (i1 != i2) {
@@ -67,7 +67,7 @@ void roznicuj(T& i1, T& i2, T& i3) {
 /// <typeparam name="T">Typ przekazany do szablonu.</typeparam>
 /// <typeparam name="N">Typ zmiennej w ktorej bedzie zapisana objetosc</typeparam>
 /// <param name="i1">Iterator 1 kontenera.</param>
-/// <param name="i2">Iterator 2 kontenera.</param>
+/// <param name="i2">Iterator wskazujacy na ostatni element kontenera</param>
 /// <param name="a">Zmienna w ktorej bedzie zapisana objetosc</param>
 template<typename T, typename N>
 void objetosc(T& i1, T& i2, N& a) {
