@@ -12,6 +12,11 @@
 #include<random>
 #include<numeric>
 
+#define _CRTDBG_MAP_ALLOC
+#include <stdlib.h>
+#include <crtdbg.h>
+
+
 using namespace std;
 
 
@@ -79,4 +84,6 @@ int main() {
 	// wypis centroidu chmury B
 	cout << endl;
 	copy(centroidB.begin(), centroidB.end(), ostream_iterator<double>(cout, " "));
+	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
+	
 }
