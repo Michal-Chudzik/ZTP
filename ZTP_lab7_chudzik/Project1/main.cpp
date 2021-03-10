@@ -1,6 +1,6 @@
 /** INFO:
-* Program generuje chmurê 100 losowych punktow w przestrzeni n-wymiarowej.
-* Wspolrzêdne sa generowane z tego samego rozkladu normalnego N(5,10),
+* Program generuje chmure 100 losowych punktow w przestrzeni n-wymiarowej.
+* Wspolrzedne sa generowane z tego samego rozkladu normalnego N(5,10),
 * nastepnie na podstawie chmury A obliczany jest jej centroid.
 * Z centroidu chmury A oblicza chmurê A' czyli kazdy odpowiadaj¹cy punkt
 * symetrii osiowej chmury A.
@@ -19,7 +19,9 @@
 
 using namespace std;
 
-
+/// <summary>
+/// Klasa generujaca rozklad normalny
+/// </summary>
 class generatorLiczbNorm {
 	// static –poniewa¿ ma byæ jeden generator dla ca³ego programu:
 	static default_random_engine rng;
@@ -84,6 +86,4 @@ int main() {
 	// wypis centroidu chmury B
 	cout << endl;
 	copy(centroidB.begin(), centroidB.end(), ostream_iterator<double>(cout, " "));
-	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
-	
 }

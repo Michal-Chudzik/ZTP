@@ -42,14 +42,15 @@ public:
 
 };
 
-
+/// <summary>
+/// Szablon klasy tworzacy liste
+/// </summary>
+/// <typeparam name="T"></typeparam>
 template<typename T>
-class Konten
-{
+class Konten{
 	List<T> lista;
 
 public:
-
 	void push(T i) {
 		lista.push(i);
 	};
@@ -58,6 +59,9 @@ public:
 	};
 	int rozmiar() { return lista.top; };
 
+	/// <summary>
+	/// Klasa iteratora listy
+	/// </summary>
 	class iterator {
 		Konten& s;
 		ListItem<T>* wsk;

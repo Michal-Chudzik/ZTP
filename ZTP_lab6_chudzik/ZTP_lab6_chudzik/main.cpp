@@ -1,7 +1,7 @@
 /** INFO:
 * Program generuje dwie serie obserwacji ptakow, liczy ile razy wystapily
 * obserwacje poszczegolnych gatunkow oraz oblicza statystyke na
-* podstawie dwoch serii pomiarow o d³ugosci 10
+* podstawie dwoch serii pomiarow o dlugosci 10
 */
 #include<set>
 #include<ctime>
@@ -12,7 +12,9 @@
 
 using namespace std;
 
-
+/// <summary>
+/// Obiekt funkcyjny do obliczania ilosci elementow w multisecie
+/// </summary>
 class obiekt_fun{
 public:
 	const multiset<int>& obs;
@@ -23,21 +25,39 @@ public:
 	}
 };
 
+/// <summary>
+/// Wywolanie obiektu funkcyjnego
+/// </summary>
+/// <param name="gat">vector z iloscia gatunkow</param>
+/// <param name="obs">multiset z obserwacjami</param>
 void count(vector<int>& gat, const multiset<int>& obs) {
 	obiekt_fun ob(obs);											// stworzenie obiektu funkcyjnego oraz wywolanie konstruktora
 	for_each(gat.begin(), gat.end(), ob);						// petla for_each wywolujaca operator wywolania() dla wszystkich elementow multisetu
 }
 
+/// <summary>
+/// funkcja pomocnicza do obliczania
+/// </summary>
+/// <param name="R">Zmienna z vectora R</param>
+/// <param name="S">Zmienna z vectora S</param>
+/// <returns>Wartosc sumy.</returns>
 double tmpsum(int& R, int& S) {
 	int tmp = R - S;
 	double suma = (tmp * tmp) / ((double)R + (double)S);
 	return suma;
 }
 
+/// <summary>
+/// Wypis
+/// </summary>
+/// <param name="n">Zmienna do wypisu</param>
 void printout(int& n) {
 	cout << n << endl;
 }
 
+/// <summary>
+/// Obiekt funkcyjny do uzupelnienia multisetow
+/// </summary>
 class obj_fun {
 public:
 	multiset<int>& tmp;
@@ -48,6 +68,10 @@ public:
 	}
 };
 
+/// <summary>
+/// Funkcja wywolujaca obiekt funkcyjny
+/// </summary>
+/// <param name="tmp">Referencyjnie przekazany multiset</param>
 void randomize(multiset<int>& tmp) {
 	obj_fun ob(tmp);
 }

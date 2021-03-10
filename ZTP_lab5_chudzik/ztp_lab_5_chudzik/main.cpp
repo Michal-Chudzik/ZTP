@@ -1,4 +1,3 @@
-#define _CRT_SECURE_NO_WARNINGS
 /** INFO:
 * Program wykorzystuj¹c obiekt klasy Mikser przetwarza dane wczytane z pliku
 * testowego mistrz.txt. Program tworzy obiekt klasy Mikser, a nastenie
@@ -7,6 +6,7 @@
 * od najdluzszych do najkrotszych. Program na koniec zapisuje dane do pliku
 * w ktorym na poczatku kazdej linii jest zapisana liczba slow w danej kolejce
 */
+#define _CRT_SECURE_NO_WARNINGS
 #include<iostream>
 #include<string>
 #include<fstream>
@@ -17,7 +17,11 @@ using namespace std;
 
 
 
-// metoda pomijajaca spacje
+/// <summary>
+/// Metoda pomijajaca spacje w linii
+/// </summary>
+/// <param name="slowo">Zmienna przechowujaca slowo.</param>
+/// <returns>Zwraca pojedyncze slowo.</returns>
 string space(string slowo) {
 	string tmp;
 	for (int i = 0; i < slowo.length(); i++) {
@@ -28,7 +32,10 @@ string space(string slowo) {
 	return tmp;
 }
 
-// szablon do sortowania w odpowiedniej kolejnosci
+/// <summary>
+/// Szablon do sortowania w odpowiedniej kolejnosci.
+/// </summary>
+/// <typeparam name="T">Typ zmiennej</typeparam>
 template<class T>
 struct greaters {	
 	bool operator()(const T& x, const T& y)const {
@@ -36,7 +43,10 @@ struct greaters {
 	}
 };
 
-// szablon do sortowania w odpowiedniej kolejnosci
+/// <summary>
+/// Szablon do sortowania w odpowiedniej kolejnosci.
+/// </summary>
+/// <typeparam name="T">Typ zmiennej</typeparam>
 template<class T>
 struct lessers { 
 	bool operator() (const T& x, const T& y)const {
@@ -45,7 +55,12 @@ struct lessers {
 };
 
 
-//Przeciazony operator wypisania do pliku
+/// <summary>
+/// Przeciazony operator wypisania do pliku
+/// </summary>
+/// <param name="os">Referencja do strumienia</param>
+/// <param name="pt">Obiekt do wypisu</param>
+/// <returns>Zwraca strumien</returns>
 ostream& operator<< (ostream& os, priority_queue<string, vector<string>, greaters<string>>& pt) {	
 	int siz = pt.size();
 	os << siz << ": ";
@@ -58,7 +73,7 @@ ostream& operator<< (ostream& os, priority_queue<string, vector<string>, greater
 }
 
 
-class Mikser : public list<priority_queue<string, vector<string>, greaters<string> > > {
+class Mikser : public list<priority_queue<string, vector<string>, greaters<string>>>{
 public:
 	Mikser() = delete;
 	Mikser(const char* filename) { open(filename); };
@@ -68,11 +83,19 @@ public:
 	void execute();
 };
 
+/// <summary>
+/// Destruktor klasy Mikser
+/// </summary>
 Mikser::~Mikser() {
 	while (!empty()) {
 		pop_back();
 	}
 }
+
+/// <summary>
+/// Metoda otwiera plik, sortuje jego zawartosc
+/// </summary>
+/// <param name="filename">Nazwa pliku.</param>
 void Mikser::open(const char* filename) {
 	ifstream file(filename);
 	string line;
@@ -107,7 +130,10 @@ void Mikser::open(const char* filename) {
 	file.close();	// zamkniecie pliku
 }
 
-// Metoda zapisujaca dane do pliku
+/// <summary>
+/// Metoda zapisujaca dane do pliku
+/// </summary>
+/// <param name="filename">Nazwa pliku</param>
 void Mikser::write(const char* filename) {
 	ofstream file(filename);
 	for (auto it = begin(); it != end(); it++) {
@@ -116,7 +142,9 @@ void Mikser::write(const char* filename) {
 	file.close();
 }
 
-// Metoda sortujaca
+/// <summary>
+/// Metoda sortujaca 
+/// </summary>
 void Mikser::execute() {	
 	sort(lessers<priority_queue<string, vector<string>, greaters<string>>>());
 }
