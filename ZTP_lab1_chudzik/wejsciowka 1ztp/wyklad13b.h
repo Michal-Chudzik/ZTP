@@ -3,10 +3,6 @@
 #include "Dane.h"
 using namespace std;
 
-/**
-* szablon kontenera tablicy
-*/
-
 #ifndef wyklad13b_h
 #define wyklad13b_h
 

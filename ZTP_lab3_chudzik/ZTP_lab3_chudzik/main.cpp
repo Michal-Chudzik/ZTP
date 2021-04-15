@@ -1,4 +1,11 @@
 /** INFO:
+* Program using template of container creates own container which storage data
+* in dynamic list, next based on template it creates two objects representing
+* containers to storage variables. Two series of real numbers representing 
+* coordinates in the space of real numbers. Program calculates coordinates 
+* p` and q` from p and q, after that it calculates the volume of the hypercube.
+* 
+* 
 * Program korzystajac z szablonu kontenera tworzy wlasny kontener przechowujacy
 * dane w liscie dynamicznej, a nastepnie na podstawie tego szablonu tworzy dwa
 * obiekty reprezentujace kontenery do przechowywania zmiennych. Dwa ciagi liczb
@@ -12,23 +19,23 @@
 #include "Konten.h"
 
 /// <summary>
-/// Losuje wartosci pseudolosowe.
+/// Getting pseudo-random numbers
 /// </summary>
-/// <returns>Zwraca wylosowana wartosc.</returns>
+/// <returns>Pseudo-random number</returns>
 double randDouble() {
 	double f = (double)rand() / RAND_MAX;
 	return f * 10;
 }
 
 /// <summary>
-/// Transformuje poprzez iteratory kontenerow
+/// Transform with containers iterators
 /// </summary>
-/// <typeparam name="T">Typ przekazany do szablonu.</typeparam>
-/// <param name="i1">Iterator 1 kontenera.</param>
-/// <param name="i2">Iterator wskazujacy na koniec kontenera.</param>
-/// <param name="i3">Iterator 2 kontenera.</param>
+/// <typeparam name="T">Type passed to template</typeparam>
+/// <param name="i1">Iterator of first container</param>
+/// <param name="i2">Iterator pointing to end of the container</param>
+/// <param name="i3">Iterator of second container</param>
 template<typename T>
-void transformuj(T& i1, T& i2, T& i3) {
+void Transform(T& i1, T& i2, T& i3) {
 	while (i1 != i2) {
 		if (*i1 < *i3) {
 			double tmp;
@@ -44,14 +51,14 @@ void transformuj(T& i1, T& i2, T& i3) {
 }
 
 /// <summary>
-/// Roznicuje poprzez iteratory kontenerow
+/// Differentiate with containers iterators
 /// </summary>
-/// <typeparam name="T">Typ przekazany do szablonu.</typeparam>
-/// <param name="i1">Iterator 1 kontenera.</param>
-/// <param name="i2">Iterator wskazujacy na koniec kontenera.</param>
-/// <param name="i3">Iterator 2 kontenera.</param>
+/// <typeparam name="T">Type passed to template</typeparam>
+/// <param name="i1">Iterator of first container</param>
+/// <param name="i2">Iterator pointing to end of the container</param>
+/// <param name="i3">Iterator of second container</param>
 template<typename T>
-void roznicuj(T& i1, T& i2, T& i3) {
+void Differentiate(T& i1, T& i2, T& i3) {
 	while (i1 != i2) {
 		*i1 = *i1 - *i3;
 		i1++;
@@ -62,15 +69,15 @@ void roznicuj(T& i1, T& i2, T& i3) {
 }
 
 /// <summary>
-/// Liczy objetosc poprzez iteratory kontenerow
+/// Calculates volume with containers iterators
 /// </summary>
-/// <typeparam name="T">Typ przekazany do szablonu.</typeparam>
-/// <typeparam name="N">Typ zmiennej w ktorej bedzie zapisana objetosc</typeparam>
-/// <param name="i1">Iterator 1 kontenera.</param>
-/// <param name="i2">Iterator wskazujacy na ostatni element kontenera</param>
-/// <param name="a">Zmienna w ktorej bedzie zapisana objetosc</param>
+/// <typeparam name="T">Type passed to template</typeparam>
+/// <typeparam name="N">Type of veriable passed to store result</typeparam>
+/// <param name="i1">Iterator of first container</param>
+/// <param name="i2">Iterator pointing to end of the container</param>
+/// <param name="a">Variable to save result</param>
 template<typename T, typename N>
-void objetosc(T& i1, T& i2, N& a) {
+void Volume(T& i1, T& i2, N& a) {
 	while (i1 != i2) {
 		a = a * (*i1);
 		i1++;
@@ -84,7 +91,7 @@ int main() {
 	Konten<double> kontener1;
 	Konten<double> kontener2;
 
-	// wpisanie wartosci do kontenerow
+	// filling containers
 	for (int i = 0; i < 100; i++) {
 		kontener1.push(randDouble());
 		kontener2.push(randDouble());
@@ -94,7 +101,7 @@ int main() {
 	Konten<double>::iterator it2 = Konten<double>::iterator(kontener2);
 	Konten<double>::iterator it3 = kontener1.end();
 
-	// wypisanie wartosci z kontenerow
+	// printing values from containers
 	cout << "\n\nkontener1:\tkontener2:\n";
 	for (int i = 0; i < kontener1.rozmiar(); i++) {
 		cout << setprecision(5) << it1++ << "\t\t" << it2++ << endl;
@@ -102,8 +109,8 @@ int main() {
 	it1.set_front();
 	it2.set_front();
 	
-	// transformacja oraz wypis kontenerow po operacji
-	transformuj<Konten<double>::iterator>(it1, it3, it2);
+	// transforming and print out of the containers
+	Transform<Konten<double>::iterator>(it1, it3, it2);
 	cout << "\n\nPo funkcji transformuj\n";
 	cout << "\nkontener1:\tkontener2:\n";
 	for (int i = 0; i < kontener1.rozmiar(); i++) {
@@ -112,11 +119,11 @@ int main() {
 	it1.set_front();
 	it2.set_front();
 	
-	roznicuj<Konten<double>::iterator>(it1, it3, it2);
+	Differentiate<Konten<double>::iterator>(it1, it3, it2);
 	
-	// obliczenie i wypisanie objetosci
+	// calculating and printing result 
 	long double obj = 1;
-	objetosc<Konten<double>::iterator, long double>(it1, it3, obj);
+	Volume<Konten<double>::iterator, long double>(it1, it3, obj);
 	cout << "\nObjetosc: "<< obj <<endl;
 	it1.set_front();
 

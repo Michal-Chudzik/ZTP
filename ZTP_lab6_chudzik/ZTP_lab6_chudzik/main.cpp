@@ -1,4 +1,9 @@
 /** INFO:
+* Program generates two series of birds observations, it counts how many
+* times they were observations of specific bird species and it 
+* calculates statistics based on two series of measurements ten each
+* 
+* 
 * Program generuje dwie serie obserwacji ptakow, liczy ile razy wystapily
 * obserwacje poszczegolnych gatunkow oraz oblicza statystyke na
 * podstawie dwoch serii pomiarow o dlugosci 10
@@ -13,34 +18,34 @@
 using namespace std;
 
 /// <summary>
-/// Obiekt funkcyjny do obliczania ilosci elementow w multisecie
+/// Function object to calculate quantity of elements in multiset
 /// </summary>
 class obiekt_fun{
 public:
 	const multiset<int>& obs;
-	obiekt_fun(const multiset<int>& obs) : obs(obs) {}			// zainicjalizowanie multisetu wartosciami przekazanymi z funkcji
-	void operator() (int& gat){									// operator modyfikuje wartosci z multisetu gat poniewaz jest przekazany przez referencje co oznacza prace na orginale
-		auto p = equal_range(obs.begin(), obs.end(), gat);		// liczenie ilosci elementow gatunkow w multisecie i zwrocenie tej ilosci do pair
-		gat = distance(p.first, p.second);						// obliczenie ilosci elementow na podstawie iteratorow pobranych z multisetu i wpisanie ich do gat
+	obiekt_fun(const multiset<int>& obs) : obs(obs) {}			// initialization of multiset 
+	void operator() (int& gat){									// operator modyifies values from multiset gat
+		auto p = equal_range(obs.begin(), obs.end(), gat);		// counting quantity of spicies in multiset and returning quantity of pairs 
+		gat = distance(p.first, p.second);						// calculating quantity of elements base on iterators from multiset
 	}
 };
 
 /// <summary>
-/// Wywolanie obiektu funkcyjnego
+/// Function object call
 /// </summary>
-/// <param name="gat">vector z iloscia gatunkow</param>
-/// <param name="obs">multiset z obserwacjami</param>
+/// <param name="gat">vector with quantity of spicies</param>
+/// <param name="obs">multiset with observations</param>
 void count(vector<int>& gat, const multiset<int>& obs) {
-	obiekt_fun ob(obs);											// stworzenie obiektu funkcyjnego oraz wywolanie konstruktora
-	for_each(gat.begin(), gat.end(), ob);						// petla for_each wywolujaca operator wywolania() dla wszystkich elementow multisetu
+	obiekt_fun ob(obs);											// creating function object and constructor call
+	for_each(gat.begin(), gat.end(), ob);						// for_each loop which calls operator() for every element in multiset
 }
 
 /// <summary>
-/// funkcja pomocnicza do obliczania
+/// Tmp function to calculate
 /// </summary>
-/// <param name="R">Zmienna z vectora R</param>
-/// <param name="S">Zmienna z vectora S</param>
-/// <returns>Wartosc sumy.</returns>
+/// <param name="R">Variable from vector R</param>
+/// <param name="S">Variable from vector S</param>
+/// <returns>Sum value</returns>
 double tmpsum(int& R, int& S) {
 	int tmp = R - S;
 	double suma = (tmp * tmp) / ((double)R + (double)S);
@@ -48,15 +53,15 @@ double tmpsum(int& R, int& S) {
 }
 
 /// <summary>
-/// Wypis
+/// Printout
 /// </summary>
-/// <param name="n">Zmienna do wypisu</param>
+/// <param name="n">Variable to print</param>
 void printout(int& n) {
 	cout << n << endl;
 }
 
 /// <summary>
-/// Obiekt funkcyjny do uzupelnienia multisetow
+/// Function object to fill multiset
 /// </summary>
 class obj_fun {
 public:
@@ -69,9 +74,9 @@ public:
 };
 
 /// <summary>
-/// Funkcja wywolujaca obiekt funkcyjny
+/// Fucntion which calls function object
 /// </summary>
-/// <param name="tmp">Referencyjnie przekazany multiset</param>
+/// <param name="tmp">Multiset passed by reference</param>
 void randomize(multiset<int>& tmp) {
 	obj_fun ob(tmp);
 }
@@ -80,24 +85,24 @@ int main() {
 	srand((unsigned int)time(NULL));
 	multiset<int> r;
 	multiset<int> s;
-	randomize(r);	// uzupelnienie multisetu wartosciami
+	randomize(r);	// multiset fill
 	randomize(s);
 	vector<int> R({ 0,1,2,3,4,5,6,7,8,9 });
 	vector<int>	S({ 0,1,2,3,4,5,6,7,8,9 });
-	count(R, r);	//wywolanie metody liczacej
-	count(S, s);	//wywolanie metody liczacej
+	count(R, r);	//counting method call
+	count(S, s);	
 
-	vector<double> tmp;	// vector pomocniczy do sumowania ilosci gatunkow
-	// wpisanie statystyki gatunkow do vectora pomocniczego
+	vector<double> tmp;	// tmp vector to sum up spiecies quantity
+	// putting spiecies statistics to tmp vector
 	transform (R.begin(), R.end(), S.begin(), back_inserter(tmp), tmpsum);
 
-	// wypis danych z R oraz S
+	// data print from R and S
 	cout << "Dane z R:\n";
 	for_each(R.begin(), R.end(), printout);
 	cout << "\n\nDane z S:\n";
 	for_each(S.begin(), S.end(), printout);
 
-	// zsumowanie statystyki
+	// summed up statistics
 	cout << "\n\nWartosc Statystyki:\n";
 	cout << accumulate<vector<double>::iterator, double>(tmp.begin(), tmp.end(), 0);
 }

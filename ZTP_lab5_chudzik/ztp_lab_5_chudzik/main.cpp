@@ -1,4 +1,11 @@
 /** INFO:
+* Program using object of class Mikser processes data loaded from test file
+* mistrz.txt. Program creates object of class Mikser, next opens and gets 
+* data from file so that each line of priority queue contains words from
+* one line sorted from longest to shortest. Program at the end saves data
+* to file where at the beginning of every line is written number of words
+* in this queue.
+* 
 * Program wykorzystuj¹c obiekt klasy Mikser przetwarza dane wczytane z pliku
 * testowego mistrz.txt. Program tworzy obiekt klasy Mikser, a nastenie
 * otwiera i wczytuje plik, tak aby kazdy wiersz kolejki priorytetowej
@@ -18,10 +25,10 @@ using namespace std;
 
 
 /// <summary>
-/// Metoda pomijajaca spacje w linii
+/// Method skipping spaces in line
 /// </summary>
-/// <param name="slowo">Zmienna przechowujaca slowo.</param>
-/// <returns>Zwraca pojedyncze slowo.</returns>
+/// <param name="slowo">variable containing one word</param>
+/// <returns>One word</returns>
 string space(string slowo) {
 	string tmp;
 	for (int i = 0; i < slowo.length(); i++) {
@@ -33,9 +40,9 @@ string space(string slowo) {
 }
 
 /// <summary>
-/// Szablon do sortowania w odpowiedniej kolejnosci.
+/// Template to sort in good order
 /// </summary>
-/// <typeparam name="T">Typ zmiennej</typeparam>
+/// <typeparam name="T">Variable type</typeparam>
 template<class T>
 struct greaters {	
 	bool operator()(const T& x, const T& y)const {
@@ -44,9 +51,9 @@ struct greaters {
 };
 
 /// <summary>
-/// Szablon do sortowania w odpowiedniej kolejnosci.
+/// Template to sort in good order
 /// </summary>
-/// <typeparam name="T">Typ zmiennej</typeparam>
+/// <typeparam name="T">Variable type</typeparam>
 template<class T>
 struct lessers { 
 	bool operator() (const T& x, const T& y)const {
@@ -56,11 +63,11 @@ struct lessers {
 
 
 /// <summary>
-/// Przeciazony operator wypisania do pliku
+/// Overloaded output operator to file
 /// </summary>
-/// <param name="os">Referencja do strumienia</param>
-/// <param name="pt">Obiekt do wypisu</param>
-/// <returns>Zwraca strumien</returns>
+/// <param name="os">Reference to stream</param>
+/// <param name="pt">Object to output</param>
+/// <returns>Stream</returns>
 ostream& operator<< (ostream& os, priority_queue<string, vector<string>, greaters<string>>& pt) {	
 	int siz = pt.size();
 	os << siz << ": ";
@@ -84,7 +91,7 @@ public:
 };
 
 /// <summary>
-/// Destruktor klasy Mikser
+/// Destructor of Mikser class
 /// </summary>
 Mikser::~Mikser() {
 	while (!empty()) {
@@ -93,9 +100,9 @@ Mikser::~Mikser() {
 }
 
 /// <summary>
-/// Metoda otwiera plik, sortuje jego zawartosc
+/// Method opens a file and sort it content
 /// </summary>
-/// <param name="filename">Nazwa pliku.</param>
+/// <param name="filename">File name</param>
 void Mikser::open(const char* filename) {
 	ifstream file(filename);
 	string line;
@@ -104,46 +111,46 @@ void Mikser::open(const char* filename) {
 			vector<string> slowa;
 			string tmp = "";
 			int i = 0;
-			// petla na zakresie przechodzaca po kazdym znaku linii
+			// loop on range of every character of a line
 			for (auto x : line) {
 				i++;
-				if (x == ' ' && i != line.length()) { // szukamy koniec slowa ktory nie jest koncem linii 
+				if (x == ' ' && i != line.length()) { // searching for end of a word which is not line ending
 					tmp = space(tmp);
 					slowa.push_back(tmp);
 					tmp = "";
 				}
-				else {		// jesli nie jest koncem slowa wpisujemy nastepna litere w tmp
+				else {		// if its not the end of the word it puts next character in tmp 
 					tmp += x;
 				}
 			}
-			tmp = space(tmp);	// usuniecie spacji na koncu linii
-			slowa.push_back(tmp);	// wpisanie slowa do vectora
-			Mikser::push_back(priority_queue<string, vector<string>, greaters<string> >());		// wpisanie priority queue do listy 
-			list<priority_queue<string, vector<string>, greaters<string>>>::iterator it = end();	// iterator listy
+			tmp = space(tmp);	// deleting space at the end of the line
+			slowa.push_back(tmp);	// pushing word from vector
+			Mikser::push_back(priority_queue<string, vector<string>, greaters<string> >());		// putting priority queue to list
+			list<priority_queue<string, vector<string>, greaters<string>>>::iterator it = end();	// list iterator
 			it--;
-			// petla wpisujaca slowa do listy
+			// loop pushing words to list
 			for (auto i = slowa.begin(); i != slowa.end(); i++){ 
 				it->push(*i);
 			}
 		}
 	}
-	file.close();	// zamkniecie pliku
+	file.close();	// closing file
 }
 
 /// <summary>
-/// Metoda zapisujaca dane do pliku
+/// Method saving data to file
 /// </summary>
-/// <param name="filename">Nazwa pliku</param>
+/// <param name="filename">File name</param>
 void Mikser::write(const char* filename) {
 	ofstream file(filename);
 	for (auto it = begin(); it != end(); it++) {
-		file << *it;	// wypis korzystajacy z przeciazonego operatora wypisu do pliku
+		file << *it;	// overload output operator
 	}
 	file.close();
 }
 
 /// <summary>
-/// Metoda sortujaca 
+/// Sorting method
 /// </summary>
 void Mikser::execute() {	
 	sort(lessers<priority_queue<string, vector<string>, greaters<string>>>());
@@ -151,7 +158,7 @@ void Mikser::execute() {
 
 
 int main() {
-	Mikser M("mistrz.txt");	// otworzenie pliku i wpisanie danych
-	M.execute();			// sortowanie pobranych danych
-	M.write("wyniki.txt");	// wypis danych do pliku
+	Mikser M("mistrz.txt");	
+	M.execute();			
+	M.write("wyniki.txt");	
 }

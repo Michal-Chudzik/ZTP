@@ -43,7 +43,7 @@ public:
 };
 
 /// <summary>
-/// Szablon klasy tworzacy liste
+/// Template of calass which makes list
 /// </summary>
 /// <typeparam name="T"></typeparam>
 template<typename T>
@@ -60,7 +60,7 @@ public:
 	int rozmiar() { return lista.top; };
 
 	/// <summary>
-	/// Klasa iteratora listy
+	/// Class of list iterator
 	/// </summary>
 	class iterator {
 		Konten& s;

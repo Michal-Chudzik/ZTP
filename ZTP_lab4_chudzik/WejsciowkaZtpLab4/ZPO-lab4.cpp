@@ -1,4 +1,6 @@
 /** INFO:
+* Program is example of programming with traits
+* 
 * Program jest przykladem programowania
 * z wykorzystaniem cech charakterystycznych
 */
@@ -210,14 +212,14 @@ class SzablonStosu{
 public:
 	int zajetosc() { return top; };
 	SzablonStosu() : top(0) {}
-	void push(const T& i) {	// metoda push dla obiektu T							
-		if (top == rozmiar)	// warunek sprawdzajacy czy iterator jest rowny rozmiarowi kontera						
-			throw Przepelnienie(typeid(i).name());	// throw zwracajacy typ danych kontenera z ktorego korzystamy
+	void push(const T& i) {	// push metohd for T							
+		if (top == rozmiar)	// if checking if iterator is equal to size of container				
+			throw Przepelnienie(typeid(i).name());	// throw returning type of container data 
 		stos[top++] = i;							
 	}
-	void push(int i) {		//metoda push dla wartosci int
-		if (top == rozmiar)	// warunek sprawdzajacy czy iterator jest rowny rozmiarowi kontera
-			throw Przepelnienie(typeid(i).name()); // throw zwracajacy typ danych kontenera z ktorego korzystamy
+	void push(int i) {		// push method for int
+		if (top == rozmiar)	// if checking if iterator is equal to size of container
+			throw Przepelnienie(typeid(i).name()); // throw returning type of container data 
 
 		// walidacja wartoœci przekazanej do zapisu  
 		if (Cechy<T>::_jest_liczba && Cechy<T>::_jest_liczba_calkowita) {
@@ -233,9 +235,9 @@ public:
 				stos[top++] = i;
 		}
 	}
-	void push(double i) {   // metoda push dla wartosci double
-		if (top == rozmiar) // warunek sprawdzajacy czy iterator jest rowny rozmiarowi kontera
-			throw Przepelnienie(typeid(i).name());			// konstruktor klasy Przepelnienie z argumentem zwracajacym typ danych dla i
+	void push(double i) {   // push method for double
+		if (top == rozmiar) //  if checking if iterator is equal to size of container
+			throw Przepelnienie(typeid(i).name());	// throw returning type of container data 
 
 		// walidacja wartoœci przekazanej do zapisu
 		if (Cechy<T>::_jest_liczba && !Cechy<T>::_jest_liczba_calkowita) {
@@ -273,26 +275,25 @@ int main() {
 		K1.push("Henryk");
 		K1.push("Sienkiewicz");
 
-		// petla konczy sie w momencie wyrzucenia wyjatku przepelnienia stosu ktory znajduje sie w metodzie push
+		// loop ends when exception is thrown for stack overflow from method push
 		while (fi) {
-			fi >> s;					//wpisanie pliku do string s
-			K1.push(s);					//wpisanie zawartosci s do kontera K1(szablon dla string)
-			fi.seekg(ios::beg);			//przestawienie wskaznika na poczatek pliku
-			fi.clear();					//wyczysczenie flag pliku
-			cout << '*';				//gwiazdka ladowania
+			fi >> s;					//putting file to string s
+			K1.push(s);					//putting content of s to K1 container(template for string)
+			fi.seekg(ios::beg);			//returning pointer to begining of a file
+			fi.clear();					//clearing the flags of file
+			cout << '*';				//loading star
 		};
 	}
 	catch (Przepelnienie& e){
-		cout << "K1 gotowy: " << e.what() << endl;		//wypis typu danych
+		cout << "K1 gotowy: " << e.what() << endl;		//print of data type
 	};
-	cout << "Danych na stosie K1: " << K1.zajetosc() << endl;	//wypis zmiennej TOP czyli ilosci danych znajdujacych sie na stosie
+	cout << "Danych na stosie K1: " << K1.zajetosc() << endl;	//print of variable TOP, which contains quantity of data from stack
 	
 	/**
-	*	przypisanie wartosci do kontenera temperatura wody
-	*	wartosci sa sprawdzane w metodzie push czy
-	*	sa poprawne dla danego typu danych, jesli
-	*	nie sa wartosci zostaja pominiete
-	*	wypis zmiennej TOP czyli ilosci danych znajdujacych sie na stosie
+	*	value assignment to container with water temperature
+	*	values are checked in push method, if they are 
+	*	not correct they are ignored.
+	*	out print of variable TOP which contains quantity of data from stack
 	*/
 	K2.push(temperatura_wody());								
 	K2.push(temperatura_wody(36.6));							
@@ -337,7 +338,7 @@ int main() {
 	cout << "Danych na stosie K7: " << K7.zajetosc() << endl;
 
 
-	// opró¿nianie stosu
+	// emptying the stack
 	try{
 		while (true)
 			K1.pop();

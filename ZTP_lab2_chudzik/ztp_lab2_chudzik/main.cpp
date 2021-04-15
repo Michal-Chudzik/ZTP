@@ -1,4 +1,11 @@
 /** INFO:
+* Program checks correctness of saved in file arithmetic expressions 
+* representing polynomial and coded in MathML.
+* It was accepted, that every tag closed in correct tags needs to 
+* be in saperate line in file.
+* 
+* 
+* 
 * Program sprawdza poprawnosc zapisanych w pliku wyrazen arytmetycznych
 * reprezentujacych wielomiany i zakodowanych wg notacji MathML.
 * Przyjete zostalo, ze kazdy element wyrazenia zamkniety w odpowiednich
@@ -12,28 +19,28 @@
 using namespace std;
 
 /// <summary>
-/// Sprawdza nawias otwierajacy, jesli przed nim sa spacje to je pomija.
+/// Checks opening tag, if there are spaces before it, they are skipped
 /// </summary>
-/// <param name="line">Przekazanie calej linii.</param>
-/// <returns>Indeks w ktorym znajduje sie nawias otwierajacy.</returns>
+/// <param name="line">Full line from file</param>
+/// <returns>Index of a opening tag</returns>
 int checkFirstBracket(string& line) {
 	int i = 0;
-	while (line.at(i) == ' ') {							//pominiecie spacji w linii ktore znajduja sie przed nawiasem otwierajacym
+	while (line.at(i) == ' ') {							//skipping spaces before opening tag
 		i++;
 	}
 	if (line.at(i) != '<') {
-		throw string("Brak nawiasu otwierajacego.");		//throw do nawiasu otwierajacego
+		throw string("Brak nawiasu otwierajacego.");		//throw to opening tag
 	}
 	return i;
 }
 
 /// <summary>
-/// Szuka nawiasu zamykajacego komende
+/// Searching for closing tag in line
 /// </summary>
-/// <param name="line">Cala linia z pliku.</param>
-/// <param name="tmp">String pomocniczy.</param>
-/// <param name="n">Indeks nawiasu otwierajacego.</param>
-/// <returns>Indeks nawiasu zamykajacego.</returns>
+/// <param name="line">Full line from file</param>
+/// <param name="tmp">Tmp string</param>
+/// <param name="n">Opening tag index</param>
+/// <returns>Closing tag index</returns>
 int command(string& line, string& tmp, int n) {
 	int licznik = line.find(">");
 	if (licznik == string::npos)throw string("Brak nawiasu zamykajacego.");
@@ -42,11 +49,11 @@ int command(string& line, string& tmp, int n) {
 }
 
 /// <summary>
-/// Szuka nawiasu zamykajacego komende konczaca blok
+/// Searching for closing tag of ending block command
 /// </summary>
-/// <param name="line">Cala linia z pliku.</param>
-/// <param name="tmp">String pomocniczy.</param>
-/// <param name="n">Indeks '/'</param>
+/// <param name="line">Full line from file</param>
+/// <param name="tmp">Tmp string</param>
+/// <param name="n">Index '/'</param>
 void commandN(string& line, string& tmp, int n) {
 	tmp = line.substr(n);
 	int licznik = tmp.find(">");
@@ -55,29 +62,29 @@ void commandN(string& line, string& tmp, int n) {
 }
 
 /// <summary>
-/// Sprawdza poprawnosc tagow z pliku.
+/// Checks corectness of tags in file
 /// </summary>
-/// <param name="file">Plik z tagami.</param>
+/// <param name="file">File with tags</param>
 void fun(fstream& file) {
-	file.open("file.txt", ios::in);	// otworzenie pliku
+	file.open("file.txt", ios::in);	// opening file
 	try {
-		if (!file.is_open()) throw string("Blad otwarcia pliku");	// sprawdzenie czy plik zostal otwarty
+		if (!file.is_open()) throw string("Blad otwarcia pliku");	// checking if file was opened
 		string stack[50];
 		int stackCounter = 0;
 		while (!file.eof()) {
 			string line;
-			getline(file, line);	// pobranie linii z pliku
+			getline(file, line);	// getting line from file
 			string tmp;
-			if (line == "")continue;	// jesli w linii nic nie ma zostaje pominieta
-			int endBracket = command(line, tmp, checkFirstBracket(line));	// wywolanie funkcji command
-			if (tmp == "math xmlns=\"http://www.w3.org/1998/Math/MathML\""){	// sprawdzenie tagu otwierajacego plik
-				stack[stackCounter] = tmp;	// wlozenie tagu na stos
+			if (line == "")continue;	// If line is empty it is skipped
+			int endBracket = command(line, tmp, checkFirstBracket(line));	// calling function command
+			if (tmp == "math xmlns=\"http://www.w3.org/1998/Math/MathML\""){	// checking first tag in file
+				stack[stackCounter] = tmp;	// putting tag on stack
 				stackCounter++;	
 			}
-			else if (tmp == "mi" || tmp == "mo" || tmp == "mn") {	// sprawdzenie tagow mi, mo, mn
-				stack[stackCounter] = tmp;	// wlozenie tagu na stos
-				int check = line.find('/');														//sprawdzenie czy w linii jest tag negujacy
-				if (check == string::npos)throw string("Brak elementu konczacego komende.");	//oraz jego pozycja
+			else if (tmp == "mi" || tmp == "mo" || tmp == "mn") {	// checking mi, mo, mn tags
+				stack[stackCounter] = tmp;	// putting tag on stack
+				int check = line.find('/');														//	checking if in line is ending tag
+				if (check == string::npos)throw string("Brak elementu konczacego komende.");	//	and it's possition
 				if (tmp == "mn") {						
 					bool containsNumber = false;
 					while (endBracket-1 < check-2) {
@@ -93,27 +100,27 @@ void fun(fstream& file) {
 				}
 				commandN(line, tmp, check);								
 				if (tmp == stack[stackCounter]) {
-					stack[stackCounter] = ' ';	// zdjecie tagow ze stosu jesli spelnia warunek
+					stack[stackCounter] = ' ';	// taking off tag from stack if the condition is true
 				}
 				else throw string("Blad tagow na stosie.");
 			}
-			else if (tmp == "msup" || tmp == "mrow"||tmp == "mfenced") {	// sprawdzenie tagow msup, mrow, mfenced
-				stack[stackCounter] = tmp;	// wlozenie tagu na stos
+			else if (tmp == "msup" || tmp == "mrow"||tmp == "mfenced") {	// checking msup, mrow, mfenced tags
+				stack[stackCounter] = tmp;	// putting tag on stack
 				stackCounter++;
 			}
-			else if (tmp == "/msup" || tmp == "/mrow" || tmp == "/mfenced") {	// sprawdzenie tagow negujacych
+			else if (tmp == "/msup" || tmp == "/mrow" || tmp == "/mfenced") {	// checking ending tags
 				tmp = tmp.substr(1);	
 				stackCounter--;	
 				if (tmp == stack[stackCounter]) {
-					stack[stackCounter] = ' ';	// zdjecie tagow ze stosu jesli spelnia warunek
+					stack[stackCounter] = ' ';	// taking off tag from stack if the condition is true
 				}
 				else throw string("Blad tagow na stosie");
 				
 			}
-			else if (tmp == "/math") {	// sprawdzenie tagu negujacego
+			else if (tmp == "/math") {	// checking ending tag
 				stackCounter--;
 				if (stack[stackCounter] == "math xmlns=\"http://www.w3.org/1998/Math/MathML\"") {
-					stack[stackCounter] = ' ';	// zdjecie tagow ze stosu jesli spelnia warunek
+					stack[stackCounter] = ' ';	// taking off tag from stack if the condition is true
 				}
 				else throw string("Blad tagow na stosie");
 			}
@@ -123,7 +130,7 @@ void fun(fstream& file) {
 		}
 	}
 	catch (string& exc) {
-		cout << exc << endl;	// wypis wyrzuconego wyjatku
+		cout << exc << endl;	// print of a thrown exception
 	}
 }
 

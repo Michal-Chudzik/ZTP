@@ -12,7 +12,7 @@ private:
 	double pojemn;
 	double temp;
 public:
-	// konstruktor domyslny
+	// default constructor
 	Dane() {
 		id = 0;
 		nazwa = ' ';
@@ -20,11 +20,11 @@ public:
 		temp = 0;
 	}
 
-	// lista inicjalizatorow konstruktora
+	// constructor initializer list
 	Dane(int sens, double nu, double tem, string nam)
 		: id(sens), pojemn(nu), temp(tem), nazwa(nam) {	}
 
-	// przeciazony operator wypisu do pliku
+	// overloaded output operator to file
 	friend ostream& operator<< (ostream& os, const Dane& d) {
 		os << '|' << setw(6) << setfill('0') << d.id <<'|';
 		os << left << setw(10) << setfill(' ') << d.nazwa<<'|';
@@ -33,7 +33,7 @@ public:
 		return os;
 	}
 
-	// przeciazony operator +=
+	// overloaded operator +=
 	Dane& operator+= (const Dane& d) {
 		temp += d.temp;
 		pojemn += d.pojemn;
